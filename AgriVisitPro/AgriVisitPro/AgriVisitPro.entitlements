@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Identificatore del container CloudKit.
+	     IMPORTANTE: sostituisci "com.boviteam.AgriVisitPro" con il tuo Bundle Identifier
+	     e assicurati che il container sia stato creato nel portale Apple Developer. -->
+	<key>com.apple.developer.icloud-container-identifiers</key>
+	<array>
+		<string>iCloud.com.boviteam.AgriVisitPro</string>
+	</array>
+
+	<!-- Abilita CloudKit come servizio iCloud -->
+	<key>com.apple.developer.icloud-services</key>
+	<array>
+		<string>CloudKit</string>
+	</array>
+
+	<!-- Necessario per la sincronizzazione tramite NSPersistentCloudKitContainer -->
+	<key>com.apple.developer.ubiquity-kvstore-identifier</key>
+	<string>$(AppIdentifierPrefix)com.boviteam.AgriVisitPro</string>
+</dict>
+</plist>
