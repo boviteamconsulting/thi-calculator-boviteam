@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import FeederNotchCalculator from "./FeederNotchCalculator.jsx";
 
 export default function App() {
+  const [page, setPage] = useState("thi");
   const [temperature, setTemperature] = useState("");
   const [humidity, setHumidity] = useState("");
   const [thi, setThi] = useState(null);
@@ -37,13 +39,31 @@ export default function App() {
     setColor(levelColor);
   };
 
-  const resetForm = () => {
+  const resetTHI = () => {
     setTemperature("");
     setHumidity("");
     setThi(null);
     setStressLevel("");
     setColor("");
   };
+
+  const buttonPress = {
+    onMouseDown: (e) => { e.currentTarget.style.transform = "scale(0.95)"; e.currentTarget.style.boxShadow = "inset 0 0 5px rgba(0,0,0,0.2)"; },
+    onMouseUp: (e) => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "none"; },
+  };
+
+  const navButtonStyle = (active) => ({
+    flex: 1,
+    padding: "8px 4px",
+    fontSize: 13,
+    fontWeight: active ? "bold" : "normal",
+    borderRadius: 8,
+    border: "none",
+    backgroundColor: active ? "#801336" : "#e0d6c8",
+    color: active ? "#fff" : "#333",
+    cursor: "pointer",
+    transition: "all 0.2s ease",
+  });
 
   return (
     <div style={{
@@ -61,95 +81,112 @@ export default function App() {
         alt="Boviteam Logo"
         style={{ width: 150, display: "block", margin: "0 auto 20px" }}
       />
-      <h1 style={{
-        textAlign: "center",
-        color: "#801336",
-        marginBottom: 20,
-        fontSize: 20
-      }}>
-        Calcolatore THI
-      </h1>
-      <input
-        type="number"
-        placeholder="Temperatura (°C)"
-        value={temperature}
-        onChange={e => setTemperature(e.target.value)}
-        style={{
-          width: "100%",
-          padding: 10,
-          fontSize: 16,
-          borderRadius: 8,
-          border: "2px solid #ccc",
-          marginBottom: 16,
-          textAlign: "center"
-        }}
-      />
-      <input
-        type="number"
-        placeholder="Umidità relativa (%)"
-        value={humidity}
-        onChange={e => setHumidity(e.target.value)}
-        style={{
-          width: "100%",
-          padding: 10,
-          fontSize: 16,
-          borderRadius: 8,
-          border: "2px solid #ccc",
-          marginBottom: 16,
-          textAlign: "center"
-        }}
-      />
-      <button
-        onClick={calculateTHI}
-        style={{
-          width: "100%",
-          padding: 10,
-          fontSize: 16,
-          borderRadius: 8,
-          border: "none",
-          backgroundColor: "#801336",
-          color: "#fff",
-          cursor: "pointer",
-          marginBottom: 16,
-          transition: "transform 0.15s ease-in-out, boxShadow 0.15s ease-in-out"
-        }}
-        onMouseDown={e => { e.currentTarget.style.transform = "scale(0.95)"; e.currentTarget.style.boxShadow = "inset 0 0 5px rgba(0,0,0,0.2)"; }}
-        onMouseUp={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "none"; }}
-      >
-        Calcola
-      </button>
-      <button
-        onClick={resetForm}
-        style={{
-          width: "100%",
-          padding: 10,
-          fontSize: 16,
-          borderRadius: 8,
-          border: "none",
-          backgroundColor: "#4d7c5a",
-          color: "#fff",
-          cursor: "pointer",
-          marginBottom: 16,
-          transition: "transform 0.15s ease-in-out, boxShadow 0.15s ease-in-out"
-        }}
-        onMouseDown={e => { e.currentTarget.style.transform = "scale(0.95)"; e.currentTarget.style.boxShadow = "inset 0 0 5px rgba(0,0,0,0.2)"; }}
-        onMouseUp={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "none"; }}
-      >
-        Reset
-      </button>
-      {thi !== null && (
-        <div style={{
-          textAlign: "center",
-          padding: 15,
-          borderRadius: 12,
-          border: "4px solid #4d7c5a",
-          backgroundColor: "#fffbe6",
-          marginBottom: 16
-        }}>
-          <p><strong>THI:</strong> {thi}</p>
-          <p style={{ color: color }}><strong>Livello di stress:</strong> {stressLevel}</p>
-        </div>
+
+      <div style={{ display: "flex", gap: 8, marginBottom: 20 }}>
+        <button style={navButtonStyle(page === "thi")} onClick={() => setPage("thi")}>
+          Calcolatore THI
+        </button>
+        <button style={navButtonStyle(page === "feeder")} onClick={() => setPage("feeder")}>
+          Tacche Autoalimentatore
+        </button>
+      </div>
+
+      {page === "thi" && (
+        <>
+          <h1 style={{
+            textAlign: "center",
+            color: "#801336",
+            marginBottom: 20,
+            fontSize: 20
+          }}>
+            Calcolatore THI
+          </h1>
+          <input
+            type="number"
+            placeholder="Temperatura (°C)"
+            value={temperature}
+            onChange={e => setTemperature(e.target.value)}
+            style={{
+              width: "100%",
+              padding: 10,
+              fontSize: 16,
+              borderRadius: 8,
+              border: "2px solid #ccc",
+              marginBottom: 16,
+              textAlign: "center",
+              boxSizing: "border-box",
+            }}
+          />
+          <input
+            type="number"
+            placeholder="Umidità relativa (%)"
+            value={humidity}
+            onChange={e => setHumidity(e.target.value)}
+            style={{
+              width: "100%",
+              padding: 10,
+              fontSize: 16,
+              borderRadius: 8,
+              border: "2px solid #ccc",
+              marginBottom: 16,
+              textAlign: "center",
+              boxSizing: "border-box",
+            }}
+          />
+          <button
+            onClick={calculateTHI}
+            style={{
+              width: "100%",
+              padding: 10,
+              fontSize: 16,
+              borderRadius: 8,
+              border: "none",
+              backgroundColor: "#801336",
+              color: "#fff",
+              cursor: "pointer",
+              marginBottom: 16,
+              transition: "transform 0.15s ease-in-out, boxShadow 0.15s ease-in-out"
+            }}
+            {...buttonPress}
+          >
+            Calcola
+          </button>
+          <button
+            onClick={resetTHI}
+            style={{
+              width: "100%",
+              padding: 10,
+              fontSize: 16,
+              borderRadius: 8,
+              border: "none",
+              backgroundColor: "#4d7c5a",
+              color: "#fff",
+              cursor: "pointer",
+              marginBottom: 16,
+              transition: "transform 0.15s ease-in-out, boxShadow 0.15s ease-in-out"
+            }}
+            {...buttonPress}
+          >
+            Reset
+          </button>
+          {thi !== null && (
+            <div style={{
+              textAlign: "center",
+              padding: 15,
+              borderRadius: 12,
+              border: "4px solid #4d7c5a",
+              backgroundColor: "#fffbe6",
+              marginBottom: 16
+            }}>
+              <p><strong>THI:</strong> {thi}</p>
+              <p style={{ color: color }}><strong>Livello di stress:</strong> {stressLevel}</p>
+            </div>
+          )}
+        </>
       )}
+
+      {page === "feeder" && <FeederNotchCalculator />}
+
       <div style={{ fontSize: 12, textAlign: "center", color: "#888" }}>
         Boviteam Consulting © 2025
       </div>
